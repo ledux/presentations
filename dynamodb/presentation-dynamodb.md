@@ -14,18 +14,18 @@ date: 2023-09-25
 - Partitions
 - Indexes
 	- Global and Local Secondary Indexes
+- Key design
 
 # Basics
-
-## Database Types
-
-
 ## Relational databases
 
 - organizes data in tables
+  - normalised data
 - tables consists of columns and rows
 - relationships between tables
-  - primary key -> foreign key
+  - referencial integrity
+    - primary key -> foreign key
+- flexible retrieval using query language
 
 ## Data Normalization
 #### Why
@@ -36,6 +36,70 @@ date: 2023-09-25
 - **1NF**: Eliminate repeating groups
 - **2NF**: Eliminate redundant data
 - **3NF**: Eliminate columns which are not dependent on the key
+
+## 1. Normal form
+
+### Not normalised
+
+Id  Dept  Name            Subject1  Subject2   Subject3
+--  ----  ----            --------  --------   --------
+1   M01   Eric Idle       Physics   Chemistry  Maths
+1   M01   Graham Chapman  History   Geography  Physics
+
+
+### Normalised
+Id  Dept  Name            Subject
+--  ----  ----            --------  
+1   M01   Eric Idle       Physics   
+1   M01   Eric Idle       Chemistry  
+1   M01   Eric Idle       Maths
+1   M01   Graham Chapman  History   
+1   M01   Graham Chapman  Geography 
+1   M01   Graham Chapman  Physics
+
+
+
+
+## NoSql
+### Advantages over relational
+- Organises data more object oriented
+  - solves the _object-relational impedence mismatch_
+- simpler design, less strict
+- better scaling
+
+###  Disadvantages over relational
+- Not strict ACID
+  - Eventual consistency
+- Transactions are harder
+- No restructuring of data on the fly
+- Not normalised => Redundant data
+
+## Types of NoSQL Databases
+
+::: columns
+:::: column
+### Columnar database
+- writes columns instead of rows
+- used for datawarehouses and analytics
+
+### Key-Value stores
+- stores key-value pairs
+- used for read- and compute-heavy workloads
+
+:::
+:::: column
+### Graph database
+- stores graphs and trees
+- used for data, which is highly interconnected
+
+### Document database
+- stores data in documents
+- more flexible than relational
+- more powerful than key-value stores
+
+::::
+:::
+
 
 ## Scaling
 
@@ -58,32 +122,6 @@ date: 2023-09-25
 
 - add more machines or partitions
 - Eventual consistency
-
-::::
-:::
-
-## Types of NoSQL Databases
-
-::: columns
-:::: column
-### Columnar database
-- writes columns instead of rows
-- used for datawarehouses and analytics
-
-### Key-Value stores
-- stores key-value pairs
-- used for read- and compute-heavy workloads
-
-:::
-:::: column
-### Graph database
-- stores graphs and trees
-- used for data, which is highly related
-
-### Document database
-- stores data in documents
-- more flexible than relational
-- more powerful than key-value stores
 
 ::::
 :::
@@ -156,12 +194,15 @@ Views										Global Secondary Indexes
 - No empty set is allowed
 - Only one data type per set
 
+### Example
+`[ "Hello World" ]`
+
 ## Document types
 ### Overview
 - Complex structures with nested attributes
 - Up to 32 levels deep
 - Only non-empty values 
-- Lists and maps _can_ be empty
+- `Lists` and `maps` _can_ be empty
 
 ## Document types
 ### Lists
@@ -182,26 +223,27 @@ Views										Global Secondary Indexes
   "name": "Eric Idle",
   "age": 80,
   "state": {
-	  "dead": false
+	  "hasCeasedToBe": false
   }
 }
 ```
 
 ## Consistency Model
-Data is replicated to at least 3 facilities within a region
+Data is replicated to at least 3 facilities within an availability zone (AZ) of a region
 
 ::: columns
-:::: column
-### Strong read consistency
-- Most up-to-date data
-- Must be requested explicitly
-
-:::
 :::: column
 ### Eventual read consistency
 - May be out of date (couple milliseconds)
 - Default consistency
 - Half as expensive as strong consistency
+- Reads from any facility
+:::
+:::: column
+### Strong read consistency
+- Most up-to-date data
+- Reads from the write replica
+- Must be requested explicitly
 ::::
 :::
 
@@ -252,7 +294,7 @@ DynamoDB **rounds** the item size **up** to the next KB
 - 1500 WCUs -> 2 Partitions
 - 3000 RCUs -> 1 Partitions
 
-`total partitions = max(2 + 1, 3)`
+`total partitions = max(3, 2 + 1)`
 
 ## Partitions
 ### Hashfunction
@@ -273,7 +315,7 @@ DynamoDB **rounds** the item size **up** to the next KB
 - Defines the order in the partition
 - Usages:
 	- Refine the query (timestamp)
-	- Categorize the data (most likely position of a football player)
+	- Categorize the data (position of a football player)
 	- Pagination 
 
 
@@ -351,7 +393,7 @@ Celestara    Lyria           1034
 Read all players from "Eldoria" sorted by `Score`
 
 - Partition key: _Eldoria_
-- Sort key: _Score_
+- No sort key used for querying
 - sorted by `Score`
 
 **WorldId**  **PlayerName**  **Score**
@@ -370,7 +412,8 @@ Celestara    Lyria           1034
 - Can be created after creation of the table
 - Up to 5 GSI per table
 - Partition key doesn't need to be unique
-- Can be used to create a subset of the tableUsed to 
+- Can be used to create a subset of the table
+- Allow only eventual consistent reads
 
 ## Global Secondary Index (GSI)
 - **PlayerName**: Partition key
@@ -403,6 +446,84 @@ Drakmoria     Valandor        4324
 Celestara     Rurik           9235
 Celestara     Lyria           1034
 
+## Comparison
+::: columns
+:::: column
 
+### Local secondary index
+
+- Same partition key
+- Uses the tables throuhgput (RCUs and WCUs)
+
+:::
+:::: column
+### Global secondary index
+
+- Different partition key
+- Uses the own throuhgput (RCUs and WCUs)
+
+# Key design
+
+## Key design
+
+::: columns
+:::: column
+### Simple Keys
+**Partition Key**
+
+- needs to be unique
+::: 
+:::: column
+### Composite Keys
+**Partition Key** and **Sort Key**
+
+- partition key can occur multiple times
+- Combination of partition and sort key need to be unique
+:::: 
+::: 
+
+Both keys can only contain _scalar types_:
+
+- string
+- number
+- binary
+
+
+## Key design
+### Data distribution
+
+- Ensure uniform distribution of data across partitions
+- Use as many unique values for partition key as possible
+
+### Read/write patterns
+
+- RCUs and WCUs get equally distributed between the partitions
+- prevent hot partitions
+- Ensure uniform utilization of RCUs and WCUs
+
+## Avoid hot partitions
+1000 RCUs across 10 Partions => 100 RCUs per partition
+![Hot partition](./hotpartition.png)
+Most request to one partition => 900 RCUs remain unused
+
+## Avoid hot partitions
+### Time series data
+
+- Store most recent data in own table, older in a second one
+
+### Scan operations and Filters
+- Scan operations read data from all partitions
+- Filter will be applied only after read
+  - RCUs are calculated **before** applying the filter
+- Queries are the only efficient way to fetch data
+
+
+## Global Secondary Index (GSI)
+### Best practices
+- Design for uniform workloads
+- Use sparse indexes
+  - Less items than in the table
+- Project fewer items
+  - Results in less RCUs
 
 
