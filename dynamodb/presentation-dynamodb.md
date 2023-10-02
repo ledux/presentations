@@ -276,6 +276,26 @@ Data is replicated to at least 3 facilities within an availability zone (AZ) of 
 
 DynamoDB **rounds** the item size **up** to the next KB
 
+## Capacity Unit
+### Burst Credits
+
+## Capacity Unit
+### Billing
+- Provisioned Capacity Cost
+  - Fixed rate per hour, regardless of the usage
+  - Steady, predictable workload
+
+- Burst Capacity 
+  - Are included in the provisioned throughput capacity
+
+- On-Demand Capacity
+  - Pay-as-you-go
+  - More expensive than _Provisioned Capacity_
+  - Highly variable or unpredictable workloads
+
+Read and write can be different capacities
+(Provisioned and On-Demand Capacity)
+
 
 # Partitions
 ## Partitions
@@ -453,14 +473,14 @@ Celestara     Lyria           1034
 ### Local secondary index
 
 - Same partition key
-- Uses the tables throuhgput (RCUs and WCUs)
+- Uses the tables throughput (RCUs and WCUs)
 
 :::
 :::: column
 ### Global secondary index
 
 - Different partition key
-- Uses the own throuhgput (RCUs and WCUs)
+- Uses the own throughput (RCUs and WCUs)
 
 # Key design
 
