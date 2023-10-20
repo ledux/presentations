@@ -7,6 +7,15 @@
 - since c# 8
 - reference types were always nullable, so why make this explicit?
 	- Now we can explicitly mark reference types as nullable, and therefor enable the compiler to do static checks
+- nullable and non-nullable types are both represented by the same .NET type
+
+
+### null-forgiving
+```cs
+string notNull = "not null";
+string? nullable = default;
+notNull = nullable!;
+```
 
 # How
 ## Dereferencing
