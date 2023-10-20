@@ -105,3 +105,62 @@ public record Person
 ### Nullable Attribute
 
 --> See code
+
+
+## Generics I
+
+### `T` is reference type
+
+`T?` --> `T?`
+
+`T` is string --> `T?` is string?
+
+### `T` is nullable reference type
+
+`T?` --> `T?`
+
+`T` is string? --> `T?` is string?
+
+### `T` is value type
+
+`T?` --> `T`
+
+`T` is int --> `T?` is int
+
+### `T` is nullable value type
+
+`T?` --> `T?`
+
+`T` is int? --> `T?` is int?
+
+
+## Generics II Constraints
+
+### Constraint `class`
+
+```cs
+public T Get<T>()  where T: class
+```
+
+- `T`: non-nullable reference type
+
+### Constraint `class?`
+
+```cs
+public T Get<T>()  where T: class?
+```
+
+- `T`: non-nullable reference type
+- `T`: nullable reference type
+
+### Constraint `notnull`
+
+```cs
+public T Get<T>()  where T: notnull
+```
+
+- `T`: non-nullable reference type
+- `T`: non-nullable value type
+
+
+
