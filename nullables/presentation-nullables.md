@@ -8,19 +8,39 @@ date: 2023-10-24
 - What are nullables
 - How are nullable checked
 - How to make use of it
-	- PostConditions https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis#postconditions-maybenull-and-notnull
-	- PreConditions https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis#preconditions-allownull-and-disallownull
+	- PostConditions 
+		- https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis#postconditions-maybenull-and-notnull
+	- PreConditions 
+		- https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis#preconditions-allownull-and-disallownull
 
 # What are nullables?
+
+## `default` values
+```cs
+string hello;
+int count;
+DateTime date;
+```
+
+## Nullable value types
+
+```cs
+int notNullable = null; 
+Nullable<int> nullable = null; 
+int? nullableShorthand = null;
+int? defaultNullable = default;
+int? instance = new();
+```
 
 ## Nullable value types
 
 ```cs
 int notNullable = null; // compiler error
-Nullable<int> nullable = null // compiles
-int? nullableShorthand = null // compiles
+Nullable<int> nullable = null; // initialized with null
+int? nullableShorthand = null; // initialized with null
+int? defaultNullable = default; // initialized with null
+int? instance = new(); // initialized with 0
 ```
-
 
 ## Nullable reference types
 
@@ -38,8 +58,8 @@ string? nullable = null // compiles
 ## Why?
 
 - Enables static compiler analysis
+- NullReferenceException is the most common runtime exception
 - Less null checks in code --> less CPU cycles
-
 
 
 # How the compiler checks the null state

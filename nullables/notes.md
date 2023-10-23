@@ -7,6 +7,8 @@
 - since c# 8
 - reference types were always nullable, so why make this explicit?
 	- Now we can explicitly mark reference types as nullable, and therefor enable the compiler to do static checks
+	- Shows the intent of the developer
+	- Compiler enforces this intent
 - nullable and non-nullable types are both represented by the same .NET type
 
 
