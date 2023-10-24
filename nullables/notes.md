@@ -55,3 +55,29 @@ public record Student
 }
 ```
 
+
+## Why enable nullables?
+- Null Safety
+	- less risk for NullReferenceExceptions
+- More explicit code
+	- forces the developer to think about his intent
+		- should I return null or an empty object?
+	- reduces ambiguity
+	- improves the understanding of the code
+
+
+# Migration
+
+
+
+
+# Resources
+
+[Migration strategy](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-migration-strategies)
+[Nullable reference types](https://learn.microsoft.com/en-us/dotnet/csharp/nullable-references)
+[Tutorial](https://learn.microsoft.com/en-us/dotnet/csharp/tutorials/nullable-reference-types)
+[Meaning of the nullable warnings and how to solve them](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/nullable-warnings)
+[Attributes nullable](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis)
+
+
+
