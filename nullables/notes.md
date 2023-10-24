@@ -69,6 +69,8 @@ public record Student
 # Migration
 
 
+# Questions
+- what happens when a non-nullable disabled code is calling a method of a nullable enabled code, which expects a non-nullable values
 
 
 # Resources
