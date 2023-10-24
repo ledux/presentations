@@ -7,11 +7,7 @@ date: 2023-10-24
 ## Topics
 - What are nullables
 - How are nullable checked
-- How to make use of it
-	- PostConditions 
-		- https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis#postconditions-maybenull-and-notnull
-	- PreConditions 
-		- https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis#preconditions-allownull-and-disallownull
+- Migration to nullables
 
 # What are nullables?
 
@@ -20,16 +16,6 @@ date: 2023-10-24
 string hello;
 int count;
 DateTime date;
-```
-
-## Nullable value types
-
-```cs
-int notNullable = null; 
-Nullable<int> nullable = null; 
-int? nullableShorthand = null;
-int? defaultNullable = default;
-int? instance = new();
 ```
 
 ## Nullable value types
@@ -182,5 +168,92 @@ public T Get<T>()  where T: notnull
 - `T`: non-nullable reference type
 - `T`: non-nullable value type
 
+# Migration
+## Nullable contexts
+![Nullable contexts](./null-contexts.png)
 
+## Setting the context
+### `csproj`
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <Nullable>disable</Nullable>
+    <Nullable>warnings</Nullable>
+    <Nullable>annotations</Nullable>
+  </PropertyGroup>
+</Project>
+```
+### Pre-processors
+
+```cs
+#nullable enable
+#nullable disable
+#nullable warnings
+#nullable annotations
+```
+
+## First Steps
+### Set the default for project
+- Nullable disable
+	- big code bases
+	- new code need pre-processors
+	- more mature and stable projects
+- Nullable enable
+	- more work upfront (pre-processors in every/many file(s))
+	- more active projects
+
+## Understanding contexts 
+### Nullability of reference types
+```
+						 ,- YES --> nullable
+						/
+         ,- YES --> annotated (T?) - NO --> non-nullable
+		/ 
+annotation enabled 
+		\
+		 `- NO --> annotated (T?) - NO --> oblivious
+						\
+						 `- YES --> oblivious
+```
+
+## Understanding warnings
+### Warnings
+- potential `null` value is assigned to a _non-nullable_ type
+- a nullable type with _maybe-null_ state is dereferenced
+- an oblivious type with _maybe-null_ state is dereferenced and the warning context is enabled
+
+## Understanding default nullability
+### Default Nullability
+- Nullable variables
+	- _maybe-null_
+- Non-nullable variables
+	- _not-null_
+- Nullable oblivious variables
+	- _not-null_
+
+## Escalate the warnings
+- Treat warnings as errors
+	- build fails when nullable warnings are not addressed
+- Set context to `warnings`
+	- all types remain oblivious
+	- fix warnings when you dereference a _maybe-null_ variable
+- Set context to `annotations`
+	- Reference types are now _non-nullable_
+	- Annotate variables, which are considered nullable (`T?`)
+	- Ensure a variable is not null, which are considered non-nullable
+- Set context to `enable` 
+	- remove all pre-processors
+
+
+## Treat the warnings as errors
+
+```xml
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+	<TreatAsError>Nullable</TreatAsError>
+  </PropertyGroup>
+</Project>
+```
 
