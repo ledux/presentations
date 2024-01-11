@@ -1,6 +1,6 @@
 ---
 title: Introduction DynamoDB
-author: Lukas Tanner
+author: Lukas Tanner, EF
 date: 2023-09-25
 ---
 
@@ -57,23 +57,6 @@ Id  Dept  Name            Subject
 1   M01   Graham Chapman  Geography 
 1   M01   Graham Chapman  Physics
 
-
-
-
-## NoSql
-### Advantages over relational
-- Organises data more object oriented
-  - solves the _object-relational impedence mismatch_
-- simpler design, less strict
-- better scaling
-
-###  Disadvantages over relational
-- Not strict ACID
-  - Eventual consistency
-- Transactions are harder
-- No restructuring of data on the fly
-- Not normalised => Redundant data
-
 ## Types of NoSQL Databases
 
 ::: columns
@@ -99,6 +82,21 @@ Id  Dept  Name            Subject
 
 ::::
 :::
+
+
+## NoSql
+### Advantages over relational
+- Organises data more object oriented
+  - solves the _object-relational impedence mismatch_
+- simpler design, less strict
+- better scaling
+
+###  Disadvantages over relational
+- Not strict ACID
+  - Eventual consistency
+- Transactions are harder
+- No restructuring of data on the fly
+- Not normalised => Redundant data
 
 
 ## Scaling
