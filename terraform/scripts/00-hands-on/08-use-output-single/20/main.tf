@@ -1,12 +1,15 @@
-provider "archive" {}
+provider "local" {}
 
-module "files" {
-  source = "../10"
+data "terraform_remote_state" "local" {
+  backend = "local"
+
+  config = {
+    path = "${path.module}/../10/.terraform/terraform.tfstate"
+  }
 }
 
-data "archive_file" "archive" {
-  type        = "zip"
-  source_file = module.files.file_name
-  output_path = "${module.files.file_name}.zip"
+resource "local_file" "hello" {
+  content  = "Hello, Terraform"
+  filename = "hello-${data.terraform_remote_state.local.outputs.file_id}.txt"
 }
 
