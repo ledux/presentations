@@ -36,5 +36,5 @@ IaC often relies on specific tools and platforms, which can create vendor lock-i
 ## Initial Investment: 
 Setting up an IaC pipeline and creating the initial codebase can require an upfront investment in time and resources.
 
-## Debugging and Complexity: 
+## Debugging: 
 When things go wrong, debugging IaC issues can be challenging, especially in intricate setups.
