@@ -1,15 +1,15 @@
-provider "local" {}
 provider "random" {}
 
 terraform {
   required_providers {
-    local = {
-      version = "~> 1.4"
-    }
+    local = {}
     random = {
       source  = "hashicorp/random"
       version = "3.5.1"
     }
+  }
+  backend "local" {
+    path = ".terraform/terraform.tfstate"
   }
 }
 
@@ -18,11 +18,6 @@ resource "random_string" "file_id" {
   special = false
 }
 
-resource "local_file" "hello" {
-  content  = "Hello, Terraform"
-  filename = "hello-${random_string.file_id.result}.txt"
-}
-
-output "file_name" {
-  value = local_file.hello.filename
+output "file_id" {
+  value = random_string.file_id.result
 }
