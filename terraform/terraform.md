@@ -1,13 +1,17 @@
-# Infrastructure as code
+---
+title: Introduction terraform
+author: Lukas Tanner, EF
+date: 2024-01-15
+---
 
-### Topics
+## Topics
 - Infrastructure as Code (IaC)
 - terraform
 
-## Infrastructure as Code (IaC)
+# Infrastructure as Code (IaC)
 
-### Problem scope
-#### Setup IT infrastructure includes
+## Problem scope
+### Setup IT infrastructure includes
 
 - installation of application
 - setup databases
@@ -16,15 +20,15 @@
 - networking
 - user and authentication
 
-#### 
+### 
 Managing this manually is time consuming, tedious, and error prone
 
-### How it works
+## How it works
 - managing infrastructure using code
 - defining the desired state
 - using an executable to align the desired with the actual state
 
-### Advantages of IaC
+## Advantages of IaC
 - Consistency and Reproducibility
 - Version Control
 - Speed and Efficiency
@@ -32,16 +36,16 @@ Managing this manually is time consuming, tedious, and error prone
 - Documentation
 - Disaster Recovery and Testing
 
-### Drawbacks of IaC
+## Drawbacks of IaC
 - Learning curve
 - Complexity
 - Tools and abstraction
 - Initial Investment
-- Debugging and Complexity
+- Debugging
 
-## Terraform
+# Terraform
 
-### What is terraform?
+## What is terraform?
 - tool for IaC
 - declarative syntax
 - maintains a state file
@@ -51,32 +55,32 @@ Managing this manually is time consuming, tedious, and error prone
 	- terraform core
 	- terraform providers
 
-### Providers
+## Providers
 - Plugins to the tf core
 - Enables tf to interact with
 	- various cloud providers
 	- services
 	- infrastructure components
 
-### Providers examples
-#### Cloudproviders
+## Providers examples
+### Cloudproviders
 - aws, google, azure
 - salesforce
 - Kubernetes
 
-#### Services
+### Services
 - azure ad
 - dns
 - http
 - tls
 
-#### Functions
+### Functions
 - local
 - archive
 - time
 - random
 
-### What is a tf Project?
+## What is a tf Project?
 - tf files in a directory
 - tf files contain `hcl` language (hashicorp configuration language)
 - consists
@@ -84,7 +88,7 @@ Managing this manually is time consuming, tedious, and error prone
 	- input parameters
 	- output values
 
-### Example
+## Example
 
 ```json
 provider "local" {
@@ -104,38 +108,38 @@ resource "local_file" "hello" {
 }
 ```
 
-### Example explanation
-#### `terraform` block
+## Example explanation
+### `terraform` block
 - terraform settings
 - required cloud providers where resources should be created
 
-#### `providers` block
+### `providers` block
 - configures the required providers
 
-#### `resource` block
+### `resource` block
 - defines components of the infrastructure
 	- virtual machines (ec2)
 	- application (docker instance)
 - block contains the arguments to configure the resource
 
-### Commands
-#### `terraform init`
+## Commands
+### `terraform init`
 - initializes the folder with the terraform files
 	- creates a folder with the provider executable
 	- lock file
 
-#### `terraform plan`
+### `terraform plan`
 - compares the desired state with the actual state
 - proposes changes to get to the desired state
 - creates a plan how to apply the changes
 
-#### `terraform apply`
+### `terraform apply`
 - executes the changes proposed in a plan 
 
-#### `terraform destroy`
+### `terraform destroy`
 - deletes all resources defined in the tf files
 
-### Local variables
+## Local variables
 - provide reusable values, accessible in a project
 
 ```
@@ -153,7 +157,7 @@ data "archive_file" "file" {
 }
 ```
 
-### Input variables
+## Input variables
 - provides values which can be changed from outside
 - can be set by 
   - default values
@@ -161,8 +165,8 @@ data "archive_file" "file" {
   - in a file
   - env vars
 
-### Input variables definition
-#### Definition
+## Input variables definition
+### Definition
 ```
 variable "file_name" {
   description = "The name of the file"
@@ -171,7 +175,7 @@ variable "file_name" {
 }
 ```
 
-#### Usage
+### Usage
 ```
 resource "local_file" "file" {
   content = "Hello"
@@ -179,23 +183,23 @@ resource "local_file" "file" {
 }
 ```
 
-### Set Input variables 
-#### cli
+## Set Input variables 
+### cli
 `tf apply -var="file_name=hello.txt"`
 
-#### `.tfvar` file
+### `.tfvar` file
 `file_name = hello.txt`
 
 `tf apply -var-file="vars.tfvar"`
 
-#### env var
+### env var
 `export TF_VAR_file_name=hello.txt`
 
-### Output variable
+## Output variable
 - returns values from the created resources
 - can be used by other projects
 
-### Output variables definition
+## Output variables definition
 
 ```
 output "server_ip" {
