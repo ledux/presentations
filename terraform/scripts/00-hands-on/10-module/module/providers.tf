@@ -1,3 +1,3 @@
-provider "random" {}
 provider "local" {}
 provider "archive" {}
+provider "random" {}
