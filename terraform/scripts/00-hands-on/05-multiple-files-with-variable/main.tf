@@ -16,17 +16,16 @@ terraform {
 variable "file_count" {
   type        = number
   description = "How many files to be created"
-  default     = 3
 }
 
 resource "random_string" "file_id" {
-  count   = local.num_files
+  count   = var.file_count
   length  = 4
   special = false
 }
 
 resource "local_file" "hello" {
-  count    = local.num_files
+  count    = var.file_count
   content  = "Hello, Terraform"
   filename = "hello-${random_string.file_id[count.index].result}.txt"
 }
