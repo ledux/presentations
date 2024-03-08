@@ -1,12 +1,13 @@
 ---
 title: forms-builder-cli
 author: Lukas Tanner, EF
-date: 2024-02-24
+date: 2024-03-11
 ---
 
 ## Topics
 - Anatomy of a cli
 - forms-builder-cli
+- System.CommandLine
 
 # Anatomy of a cli
 
@@ -74,32 +75,48 @@ dotnet new console -n ConsoleApp --framework net8.0 --dry-run
 ## arity
 Number of values that can be passed to an option or command
 
-| min   | max   | valid?    | example                     |
-| :--   | :--   | :----     | :---                        |
-| 0     | 0     | valid     | --file                      |
-|       |       | invalid   | --file a.json               |
-|       |       | invalid   | --file a.json --file b.json |
-| ----- | ----- | --------- | --------------------------  |
-| 0     | 1     | valid     | --file                      |
-|       |       | valid     | --file a.json               |
-|       |       | invalid   | --file a.json --file b.json |
-| ----- | ----- | --------- | -----------------------     |
-| 1     | 1     | valid     | --file a.json               |
-|       |       | invalid   | --file                      |
-|       |       | invalid   | --file a.json --file b.json |
+| min   | max   | valid?    | example                       |
+| :--   | :--   | :----     | :---                          |
+| 0     | 0     | valid     | `--file`                      |
+|       |       | invalid   | `--file a.json`               |
+|       |       | invalid   | `--file a.json --file b.json` |
+| ----- | ----- | --------- | ----------------------------- |
+| 0     | 1     | valid     | `--file`                      |
+|       |       | valid     | `--file a.json`               |
+|       |       | invalid   | `--file a.json --file b.json` |
+| ----- | ----- | --------- | ----------------------------- |
+| 1     | 1     | valid     | `--file a.json`               |
+|       |       | invalid   | `--file`                      |
+|       |       | invalid   | `--file a.json --file b.json` |
 
 
 ## arity (cont.)
 
-| min   | max   | valid?    | example                     |
-| :--   | :--   | :----     | :---                        |
-| 0     | n     | valid     | --file                      |
-|       |       | valid     | --file a.json               |
-|       |       | valid     | --file a.json --file b.json |
-| ----- | ----- | --------- | -----------------------     |
-| 1     | n     | invalid   | --file                      |
-|       |       | valid     | --file a.json               |
-|       |       | valid     | --file a.json --file b.json |
+| min   | max   | valid?    | example                       |
+| :--   | :--   | :----     | :---                          |
+| 0     | n     | valid     | `--file`                      |
+|       |       | valid     | `--file a.json`               |
+|       |       | valid     | `--file a.json --file b.json` |
+| ----- | ----- | --------- | ----------------------------- |
+| 1     | n     | invalid   | `--file`                      |
+|       |       | valid     | `--file a.json`               |
+|       |       | valid     | `--file a.json --file b.json` |
+
+## cli vs. GUI
+```
+dotnet new console -n ConsoleApp --framework net8.0 --dry-run
+```
+### Benefits
+
+- Shareable
+- Automatable
+
+--> usable by machines and humans alike
+
+### Disadvantages
+- User need to know more
+	- syntax
+	- parameter names and values
 
 
 # forms-builder-cli
